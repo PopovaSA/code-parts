@@ -223,11 +223,16 @@ $col1.css({
 ```
 #### 3.2.3 Добавить пробелы между тысячами
 ```javascript
- $col1.text(_text.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '));
+$lastColumn.each(function(index, item){
+    $(item).text( $(item).text().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '));
+});
 ```
 #### 3.2.4 Заменить null на -
 ```javascript
-$col1.text().replace('null', '-'));
+$lastColumn.each(function(index, item){
+    $(item).text($(item).text().replace('null', '-'));
+});
+```
 ```
 
 ### 3.3. Покрасить шапку таблицы
