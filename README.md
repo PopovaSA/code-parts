@@ -50,9 +50,9 @@ w.series[0].data = w.series[0].data.slice(0,10);
 ```javascript
 w.plotOptions.series.dataLabels.style.textOutline = false;
 ```
-### 1.10.	Убрать тень (подсветку) подписей данных круговой
+### 1.10.	Убрать тень (подсветку) подписей данных
 ```javascript
-w.plotOptions.pie.dataLabels.style.textOutline = false; 
+w.plotOptions.series.dataLabels.style.textOutline = false; 
 ```
 ### 1.11.	Отсортировать круговую диаграмму от большего к меньшему, округление до 2 символа (JS код)
 ```javascript
@@ -86,35 +86,60 @@ w.series[0].data =  w.series[0].data.sort(function(a,b){
 
 ## 2.	Форматирование подписей
 
-### 2.1.	Обрезание значения (применение через поле «Форматирование подписей/точек »)
-
-В поле «Текст» для круговой и в поле «Форматирование подписей/точек » ставится строчка ниже:
+### 2.1. Использование форматирования через поле в property grid DD
+В поле «Текст» доступны следующие переменные для форматирования:
 ```javascript
-(@value.y).toFixed(2)
+@value.y // Значение по оси Y
+@value.x // Значение по оси X
+@value   // Значение (если ось одна, например в круговой)
+@total   // Общая сумма. Например всего круга в круговой
+@series.name // Имя серии
+@point.name  // Имя точки
+@point.color // Цвет точки
+@percent     // Процент (для круговой или stacked Column)
 ```
-*.toFixed(2)-обрезание значения до 2 знаков после запятой. В скобках количество знаков после запятой.
-Важно: значение просто обрезается, а не округляется!
-
-### 2.2.	Округление значения (применение через поле «Форматирование подписей/точек »)
-
-В поле «Текст» для круговой и в поле «Форматирование подписей/точек » ставится строчка ниже:
+#### Примеры использования
+##### Округление:
 ```javascript
-Math.round(@value.y)
+Math.round(@value.y * n) / m // Где m и n - степени 10.
+Math.round(@value.y*100)/100  //// Математическое округление до двух знаков после запятой. 
+Math.round(@value.y)  // Математическое округление
+Math.round(@value.y/1000)  // Округление до тысяч
 ```
-Математическое округление.
-### 2.3.	Задать надпись с определенным текстом в центре круговой
+##### Поставить пробелы между тысячами
+```javascript
+Math.round(@value.y).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
+```
+##### Покрасить подпись в цвет точки
+```javascript
+'<div style="color:' +@point.color+ '">'+ @value +'</div>'
+```
+##### Задать надпись с определенным текстом в центре круговой
 ```javascript
 "<center>"+@total+"<br>млрд.руб."
-
 ```
     "<center>" - Выравнивание надписи по центру.
     "<br>млрд.руб."- будет перенесено на следующую строку из-за <br>.
 
-### 2.4.	Убрать буквы «K», «G»… (форматирование подписи оси)
+##### Форматирование подсказки виджета (применение через поле «Форматирование подписей/точек »)
+
+В поле «Форматирование подписей/точек » ставится строчка ниже:
 ```javascript
-w.yAxis.labels.format = '{value}';
+@series.name+': '+Math.round(@value.y).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ').bold()
 ```
-### 2.5.	Сделать все значения на гистограмме больше нуля (JS код)
+
+##### Все это можно комбинировать. Например:
+```javascript
+'<div style="color:' +(Math.round(@value.y*100)/100).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')+ '">'+ @value +'</div>'
+```
+Округлит до двух знаков после запятой и покрасит подпись в цвет столбца
+
+### 2.2.	Убрать буквы «K», «G»… через js код (форматирование подписи оси через js код)
+```javascript
+w.yAxis.labels.format = '{value:.,:0f} Ваш текст';
+```
+Округлит до 0 заков после запятой, поставит пробелы и припишет "Ваш текст"
+### 2.3.	Сделать все значения на гистограмме больше нуля (JS код)
 ```javascript
 
 w.series = w.series.map(function(item){
@@ -128,7 +153,7 @@ w.series = w.series.map(function(item){
 
 ```
 
-### 2.6.	В виджете-показателе выводить число с точностью до одного символа после запятой
+### 2.4.	В виджете-показателе выводить число с точностью до одного символа после запятой
 
 Строку
 ```javascript
@@ -140,7 +165,7 @@ value = (aggFuncs[w.props.aggregateFunction](w.data.data.values[0])).toFixed(1);
 ```
 Обрезание значения, а не математическое округление!
 
-### 2.7.	Обрезание значений серий до n знаков после запятой (JS код)
+### 2.5.	Обрезание значений серий до n знаков после запятой (JS код)
 ```javascript
 w.plotOptions.series.dataLabels.formatter = function(){
     return Number((this.y).toFixed());
@@ -149,39 +174,31 @@ w.plotOptions.series.dataLabels.formatter = function(){
 *.toFixed(0) или *.toFixed() -обрезание значения до целого. В скобках количество знаков после запятой.
 Важно: значение просто обрезается, а не округляется!
 
-### 2.8.	Округление с пробелами между разрядами (JS код)
+### 2.6. Форматирование подписей диаграммы с накоплением (JS код)
+##### Округление
 ```javascript
 w.yAxis.stackLabels.formatter = function(){
     return Math.round(this.total).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
 }
 ```
-
-Математическое округление до целого числа.
 Было: 123456789,12345
 Стало: 123 456 789
-
-### 2.9.	Вывод значений в миллионах (миллиардах)
+##### Вывод значений в миллионах (миллиардах)
 ```javascript
 w.yAxis.stackLabels.formatter = function(){
-    return (this.total/1000000).toFixed(1)
+    return Math.round(this.total/100000)/10
 }
 ```
-*.toFixed(1)-обрезание значения до 1 знаков после запятой. В скобках количество знаков после запятой.
-Важно: значение просто обрезается, а не округляется!
+В примере мы выводим в миллионах с точность до одного знака после запятой. Для этого делим на сто тысяч, округляем, потом делим еще на 10.  
 Было: 123456789,12345
-Стало: 123,4
+Стало: 123,4    
+Аналогично можно сделать вывод в миллиардах и с точность до произвольного знака.
+Также можно добавить сделать:
 ```javascript
-return (this.total/100000).toFixed(1); //– для вывода в миллионах,
-return (this.total/100000000).toFixed(1;) //– для вывода в миллиардах и так далее..
-
+(Math.round(this.total/100000)/10).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
 ```
+Чтобы добавить пробелы между тысячами
 
-### 2.10.	Форматирование подсказки виджета (применение через поле «Форматирование подписей/точек »)
-
-В поле «Текст» для круговой и в поле «Форматирование подписей/точек » ставится строчка ниже:
-```javascript
-@series.name+': '+Math.round(@value.y).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ').bold()
-```
 
 ## 3. Таблицы
 
@@ -233,7 +250,7 @@ $lastColumn.each(function(index, item){
     $(item).text($(item).text().replace('null', '-'));
 });
 ```
-```
+
 
 ### 3.3. Покрасить шапку таблицы
 ```javascript
@@ -362,9 +379,137 @@ w.series.forEach(function(serie){
     serie.point= {events: {
         click: function(){
            setFilter(filterGuid, [this.name]); //this.name - имя серии(столбца), this.point.name - имя точки(строки)
+           //Можно применять сразу два фильтра, для этого определить еще один id фильтра и вызвать setFilter второй раз
+           //Вот так setFilter(filterGuid, [this.name]);setFilter(filterGuid2, [this.point.name])
         }
     }
 }});
+
+function setFilter(guid, values){
+    commandService.sendCommand({
+              CommandType: "SetFilterValues+Command",
+              WidgetGuid: guid,
+              SelectedValues: values
+            });
+}
+```
+
+### 6.4 Добавить drilldown в гистограмму или pie и применение фильтров при клике на нижнем уровне.
+ Этот способ предпочтительней использования пользовательского виджета. Просто копируем код и заменяем им код виджета. Большая часть настроек из property grid будет работать.
+```javascript
+//Цвета необходимо задавать здесь. Каждый уровень берет свой цвет по порядку.
+var colors = ["#FDCE18", "#9DB1CF", "#31475D", "#D0DAE8", "#B45E40", "#EDAE58", "#F5D897", "#767676", "#A29FA2"]
+
+/*
+*Список id фильтров, которые будут применяться при клике на элемент нижнего уровня. 
+*Нужно передавать в том же порядке, что и уровни.
+*Если нужен только фильтр нижнего уровня, то остальные оставляем пустыми строками.
+*/
+var filters = ['f7dd606ccc714e3796647e61eb56069e','87599cfde18e461ea1f56bb65d35ca06','34b29e8ba4bf4b2dbc7cce6ca3a5ecb0','3a320669408e47ce8a96934f0bfad664'];
+
+var serie = {
+	name: 'Состояние', 
+	data: {}
+}
+var drill = {}
+var data = getWidgetByGuid(w.general.renderTo).widgetData.data;
+
+
+var treeData = {}
+_.zip(data.rows, data.values[0]).forEach(function(item){
+    var row = item[0],
+        value = item[1]
+    //Заполняем верхнюю серию
+    if (serie.data[row[0]] === undefined) {
+        serie.data[row[0]] = value
+    }else {
+        serie.data[row[0]] += value
+    }
+    //Заполняем дриллы
+    for (var i = 1;i<row.length;i++){
+        var drillId = row.slice(0,i).join('-')
+        var dataName = row[i];
+        var drillTo = drillId + '-' + dataName
+        //console.log(drillTo)
+        if (drill[drillId] === undefined){
+            drill[drillId] = {
+                name: drillId,
+                id: drillId,
+                color: colors[i],
+                data: {}
+            }
+            //Добавляем обработчик клика на нижний уровень
+            if(i == row.length - 1){
+                drill[drillId].point = {events:{
+                    click: clickHandler
+                }}
+            }
+        }
+        if (drill[drillId].data[dataName] === undefined){
+            drill[drillId].data[dataName] = {name: dataName,y: value, drilldown: drillTo} 
+        }else {
+            drill[drillId].data[dataName].y += value
+        }
+    }
+    
+});
+//Конвертируем данные серии из объекта в массив
+var temp = []
+for (var key in serie.data) {
+    temp.push({name: key, y: serie.data[key], drilldown:key})
+}
+serie.data = temp;
+
+//Конвертируем дриллы из объекта в массив
+drill = Object.keys(drill).map(function(key){
+    return $.extend(drill[key], {data: Object.keys(drill[key].data).map(function(dataKey){
+        return drill[key].data[dataKey]
+    })})
+    // var drillObj = drill[key];
+    // var drillData = drillObj.data
+    // console.log(drillData)
+    // return $.extend({},drillObj, {
+    //     data: Object.keys(drillData).map(function(dataKey){
+    //         drillData[dataKey]
+    //     })
+    // })
+})
+if (w.xAxis) w.xAxis.categories = undefined;
+//console.log(serie);
+//console.log(drill)
+Highcharts.chart({
+    chart: w.general,
+    lang: {
+        drillUpText: "Назад к {series.name}"
+    },
+    xAxis: w.xAxis,
+    yAxis: w.yAxis,
+    plotOptions: w.plotOptions,
+    series: [serie],//w.series,
+    drilldown: {
+        activeAxisLabelStyle: {
+            textDecoration: "normal",
+            color: "black",
+            fontWeight: "normal"
+        },activeDataLabelStyle: {
+            textDecoration: "normal",
+            color: "black",
+            fontWeight: "normal"
+        },
+        series: drill
+    },
+    legend: w.legend,
+    tooltip: w.tooltip,
+    colors: w.colors
+});
+
+function clickHandler(){
+    var values = this.drilldown.split('-');
+    _.zip(filters,values).forEach(function(item){
+        setFilter(item[0],[item[1]])
+    })
+    console.log(this)
+}
 
 function setFilter(guid, values){
     commandService.sendCommand({
