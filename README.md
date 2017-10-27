@@ -200,7 +200,10 @@ w.yAxis.stackLabels.formatter = function(){
 Аналогично можно сделать вывод в миллиардах и с точность до произвольного знака.
 Также можно добавить сделать:
 ```javascript
-(Math.round(this.total/100000)/10).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
+w.yAxis.stackLabels.formatter = function(){
+    return (Math.round(this.total/100000)/10).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
+}
+
 ```
 Чтобы добавить пробелы между тысячами
 
