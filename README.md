@@ -399,7 +399,38 @@ function setFilter(guid, values){
 }
 ```
 
-### 6.4 Добавить drilldown в гистограмму или pie и применение фильтров при клике на нижнем уровне.
+### 6.4 Добавить новую серию, рассчитанную по формуле от других серий.
+```javascript
+var newSeriesName = "New Series",  //Имя новой серии
+    newSeriesColor = 'blue';        //Цвет новой серии
+/*
+*Формула для расчета новой серии. Столбцы помечаются как $номерСтолбца. 
+*Например $0 - нулевой столбец, $2 - второй столбец(начиная с 0).
+*В приведенной ниже формуле мы нулевой столбец умножаем на 20, первый на 30, далее складываем
+*и делим результат на значение второго столбца
+*/
+var formula = '(20 * $0 + 30 * $1) / $2'; // Формула
+
+//Код - обработчик. Новая серия добавляется в конец.
+var items = w.series.map(function(serie){
+    return serie.data;
+});
+var repacedFormula = formula.replace(/\$\d/g, function(str){
+    return 'col['+str.slice(1)+'].y'
+});
+//console.log(repacedFormula)
+var newSeriesData = _.zip.apply(this,items).map(function(col){
+    var newValue =  eval(repacedFormula);
+    return $.extend({},col[0],{y:newValue})
+});
+w.series = w.series.concat([{
+    'name': newSeriesName,
+    'data': newSeriesData,
+    'color': newSeriesColor
+}])
+```
+
+### 6.5 Добавить drilldown в гистограмму или pie и применение фильтров при клике на нижнем уровне.
  Этот способ предпочтительней использования пользовательского виджета. Просто копируем код и заменяем им код виджета. Большая часть настроек из property grid будет работать.
 ```javascript
 //Цвета необходимо задавать здесь. Каждый уровень берет свой цвет по порядку.
@@ -470,15 +501,7 @@ drill = Object.keys(drill).map(function(key){
     return $.extend(drill[key], {data: Object.keys(drill[key].data).map(function(dataKey){
         return drill[key].data[dataKey]
     })})
-    // var drillObj = drill[key];
-    // var drillData = drillObj.data
-    // console.log(drillData)
-    // return $.extend({},drillObj, {
-    //     data: Object.keys(drillData).map(function(dataKey){
-    //         drillData[dataKey]
-    //     })
-    // })
-})
+});
 if (w.xAxis) w.xAxis.categories = undefined;
 //console.log(serie);
 //console.log(drill)
