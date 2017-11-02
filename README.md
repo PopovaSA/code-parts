@@ -265,14 +265,23 @@ $lastColumn.each(function(index, item){
 ```
 
 
-### 3.3. Покрасить шапку таблицы
+### 3.3. Покрасить шапку таблицы. Код вставлять после TableRender
 ```javascript
 var headColor = '#FDCE18'
 $('#table-' + w.general.renderTo + ' thead').css('background',headColor);
 ```
 headColor - цвет шапки
 
-### 3.3.	Убрать слияние строк в таблице (JS код)
+### 3.3. Закрепить шапку таблицы. Код вставлять после TableRender
+Работает только вместе с подкраской шапки. В противном случае под шапкой будут видны строки при скролле.
+```javascript
+document.getElementById("grid-"+ w.general.renderTo).addEventListener("scroll", function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+```
+
+### 3.5.	Убрать слияние строк в таблице (JS код)
 Работает только с дополнительной надстройкой на сервер!
 disableLeftColspan: true
 
