@@ -266,6 +266,7 @@ $lastColumn.each(function(index, item){
 
 
 ### 3.3. Покрасить шапку таблицы. Код вставлять после TableRender
+Данная настройка есть в настройках таблицы!!!
 ```javascript
 var headColor = '#FDCE18'
 $('#table-' + w.general.renderTo + ' thead').css('background',headColor);
@@ -275,6 +276,7 @@ headColor - цвет шапки
 ### 3.3. Закрепить шапку таблицы. Код вставлять после TableRender
 Работает только вместе с подкраской шапки. В противном случае под шапкой будут видны строки при скролле.
 ```javascript
+$('#table-' + w.general.renderTo).css({'border-collapse':'initial'});
 document.getElementById("grid-"+ w.general.renderTo).addEventListener("scroll", function(){
    var translate = "translate(0,"+this.scrollTop+"px)";
    this.querySelector("thead").style.transform = translate;
