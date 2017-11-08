@@ -7,10 +7,11 @@ w.series[1].showInLegend = false;
 w.series[1].visible = false;
 ```
 Скрытие первой серии ( и из легенды) для отображения.
-#### 1.2.	Толщина линии в графике (JS код)
+#### 1.2.	Толщина линии в графике (JS код) и маркер
 
 ```javascript
-w.series[0]['lineWidth'] = '4px'; 
+w.series[0]['lineWidth'] = '4px'; //Толщина линии
+w.series[0].marker = { symbol: 'square' }// делает маркер первой серии квадратом. Circle, triangle - круг и треугольник соответственно.  
 ```
 Менять значение «4» на нужную толщину. w.series[0] – номер серии. Необходимо для всех серий прописать.
 
@@ -273,7 +274,7 @@ $('#table-' + w.general.renderTo + ' thead').css('background',headColor);
 ```
 headColor - цвет шапки
 
-### 3.3. Закрепить шапку таблицы. Код вставлять после TableRender
+### 3.4. Закрепить шапку таблицы. Код вставлять после TableRender
 Работает только вместе с подкраской шапки. В противном случае под шапкой будут видны строки при скролле.
 ```javascript
 $('#table-' + w.general.renderTo).css({'border-collapse':'initial'});
@@ -282,8 +283,18 @@ document.getElementById("grid-"+ w.general.renderTo).addEventListener("scroll", 
    this.querySelector("thead").style.transform = translate;
 });
 ```
-
-### 3.5.	Убрать слияние строк в таблице (JS код)
+### 3.5 Покрасить строку таблицы в зависимости от значения
+```javascript
+$('#table-' + w.general.renderTo + ' tbody tr').each(function(index,item){
+    var val = +$(item.children[2]).text(); //children[2] - берем значение третьего столбца
+    if (val >= 0){
+        $(item).css({background: "#DCEBD3"}); //Цвет, если больше нуля
+    }else{
+        $(item).css({background: "#F9D6D5"});  //Цвет, если меньше нуля
+    }
+});
+```
+### 3.6.	Убрать слияние строк в таблице (JS код)
 Работает только с дополнительной надстройкой на сервер!
 disableLeftColspan: true
 
