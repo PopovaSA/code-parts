@@ -11,7 +11,8 @@ w.series[1].visible = false;
 
 ```javascript
 w.series[0]['lineWidth'] = '4px'; //Толщина линии
-w.series[0].marker = { symbol: 'square' }// делает маркер первой серии квадратом. Circle, triangle - круг и треугольник соответственно.  
+w.series[0].marker = { symbol: 'square', radius: 10 }
+// делает маркер первой серии квадратом. Circle, triangle - круг и треугольник соответственно. Radius - размер
 ```
 Менять значение «4» на нужную толщину. w.series[0] – номер серии. Необходимо для всех серий прописать.
 
@@ -565,8 +566,7 @@ function clickHandler(){
     var values = this.drilldown.split('-');
     _.zip(filters,values).forEach(function(item){
         setFilter(item[0],[item[1]])
-    })
-    console.log(this)
+    });
 }
 
 function setFilter(guid, values){
