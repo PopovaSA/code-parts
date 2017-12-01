@@ -103,9 +103,7 @@ w.series[0].negativeColor = 'red'; //Красим точки первой сер
 
 ```javascript
 w.yAxis.maxPadding = 0.1 // Для горизонтальных баров 
-```
 
-```javascript
 w.xAxis.maxPadding = 0.1 // Для вертикальных баров
 ```
 
