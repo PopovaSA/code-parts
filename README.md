@@ -739,3 +739,49 @@ function setFilter(guid, values){
             });
 }
 ```
+### 6.6 Сгруппировать колонки гистограммы по две. Одна будет рисоваться поверх другой.
+Код добавить в гистограмму до конструктора
+```javascript
+//Работает с количеством колонок <=6
+var n_cols = Math.floor((w.series.length + 1) / 2);
+var pPaddingBig, pPaddingSmall,  start, step;
+if (n_cols === 1) {
+    pPaddingBig = 0.1;
+    pPaddingSmall = .2;
+    start = 0;
+    step = 0;
+}else if (n_cols === 2){
+    pPaddingBig = 0.3;
+    pPaddingSmall = 0.4;
+    start = -0.2;
+    step = 0.4;
+}else{
+    pPaddingBig = 0.3;
+    pPaddingSmall = 0.4;
+    start = -0.3;
+    step = 0.3;
+}
+w.series.forEach(function(item, i){
+    var zIndex, pointPadding;
+    if (i%2===0){
+        pointPadding = pPaddingBig
+        zIndex = 0;
+    }else{
+        pointPadding = pPaddingSmall
+        zIndex = 10;
+    }
+    var pointPlacement = start + Math.floor(i/2) * step;
+    Object.assign(item, {
+        pointPadding: pointPadding,
+        pointPlacement: pointPlacement,
+        zIndex: zIndex
+    }) 
+});
+ 
+w.plotOptions.series.grouping = false
+w.plotOptions.column = {
+            grouping: false,
+            shadow: false,
+            borderWidth: 0
+        };
+```
