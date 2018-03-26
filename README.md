@@ -111,6 +111,10 @@ $('#widget-' + w.general.renderTo).css({
 $('#' + w.general.renderTo).css({
     'border-radius': borderRadius
 });
+///Строки ниже нужны для фильтра
+$('#' + w.general.renderTo + ' .rb-filter-header-container').css({
+    'border-radius': borderRadius
+});
 ```
 
 ```javascript
