@@ -108,9 +108,19 @@ $('#widget-' + w.general.renderTo).css({
     'border-radius': borderRadius,
     'box-shadow': boxShadowString
 });
-$('#' + w.general.renderTo).css({
-    'border-radius': borderRadius
+$('#widget-header-' + w.general.renderTo).css({
+    'border-radius': borderRadius,
+    'box-shadow': boxShadowString,
+    'border-bottom-left-radius': '0px',
+    'border-bottom-right-radius': '0px'
 });
+$('#' + w.general.renderTo).css({
+    'border-radius': borderRadius,
+    'border-top-left-radius': '0px',
+    'border-top-right-radius': '0px'
+});
+///Скругляет вместе с заголовком. Если заголовка нет, то стиль widget-header закомментировать 
+// и у стиля самого элемента закомментить верхние радиусы. 
 ///Строки ниже нужны для фильтра
 $('#' + w.general.renderTo + ' .rb-filter-header-container').css({
     'border-radius': borderRadius
