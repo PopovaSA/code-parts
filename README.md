@@ -146,6 +146,23 @@ w.general.marginRight = 100; //Правый отступ
 w.general.marginTop = 50; //Верхний отступ
 ```
 
+#### 1.17 Настройки маркеров
+Этот код применит настройки маркеров ко всем сериям.
+```javascript
+w.series.forEach(function(serie){
+    serie.marker.fillColor = "white"; // Делаем сам маркер белым
+    serie.marker.lineWidth = 2; // Ширина границы маркера
+    serie.marker.lineColor = serie.lineColor; //Цвет границы маркера ставим равным цвету серии
+    serie.marker.radius = 6; //Радиус маркера
+    serie.marker.symbol = 'circle'; //Символ маркера. Доступны  "circle", "square", "diamond", "triangle" and "triangle-down"
+});
+```
+Если нужно, можно свойства применять к одной конкретной серии. Вот так:
+```javascript
+ w.series[0].marker.symbol = 'circle' // сделать маркеры первой кругами
+```
+
+ Если нужно, можно свойства применять к одной конкретной серии. Вот так w.series[номер серии].marker.symbol = 'circle' - сделать маркеры кругами
 ## 2 Форматирование подписей
 
 ### 2.1 Использование форматирования через поле в property grid DD
