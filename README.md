@@ -144,6 +144,7 @@ w.general.marginLeft = 200; //Левый отступ
 w.general.marginBottom = 130; //Нижний отступ
 w.general.marginRight = 100; //Правый отступ
 w.general.marginTop = 50; //Верхний отступ
+w.legend.x = 100 // Отступ для легенды
 ```
 
 #### 1.17 Настройки маркеров
