@@ -381,7 +381,21 @@ $('#table-' + w.general.renderTo + ' tbody tr').each(function(index,item){
     }
 });
 ```
-### 3.6	Убрать слияние строк в таблице (JS код)
+
+### 3.6 Покрасить числовые клетки таблицы в зависимости от значения
+```javascript
+$('#table-' + w.general.renderTo + ' tbody td').each(function(index,item){
+    var val = +$(item).text(); 
+    if (val < 0){
+        $(item).css({background: "#DCEBD3"});
+    }else if (val >100){
+        $(item).css({background: "red"});
+    }
+});
+```
+В этом примере у нас два условия: для значений меньше нуля и больше ста. Можно менять цвет и добавлять условия
+
+### 3.7	Убрать слияние строк в таблице (JS код)
 Работает только с дополнительной надстройкой на сервер!
 disableLeftColspan: true
 
