@@ -206,11 +206,12 @@ $('#widget-header-' + w.general.renderTo + ' > a').css({
 ```javascript
         tooltip: {
             backgroundColor:'white',
-            enabled: true
+            enabled: false
         }
 ```
 ### 1.24 Изменить отображение даты
-Для работы необходимо положить на сервер библиотеку: ... , расположенную по адресу: ... 
+#### Для работы необходимо положить на сервер библиотеку: ... , расположенную по адресу: \\serv2\opr$\Библиотека аналитика\Актуальные виджеты\
+ 
 ///d - дата для конывертации
 ///clv - календарный разрез:
 /// 0 (undefined) - день, месяц и год
@@ -221,7 +222,8 @@ $('#widget-header-' + w.general.renderTo + ' > a').css({
 /// 5-неделя
 /// 6-
 /// 7-день
-function getDateString(d, clv){
+
+##### function getDateString(d, clv){
 
 ```javascript
     w.xAxis.categories.forEach(function(categorie, index){
@@ -375,6 +377,7 @@ w.xAxis.categories = ['Первый', 'Второй']
 ## 3. Таблицы
 
 ### 3.1	Наименования столбцов в таблиц. Код вставлять до TableRender
+Старый вариант
 ```javascript
 w.data.columns.forEach(function(item){
     item.captions = item.captions.map(function(innerItem){ 
@@ -388,6 +391,14 @@ w.data.columns[2].captions[0] = 'Кол-во клиентов';
 w.data.columns[0]. captions[0]  //– первый столбец таблицы,
 w.data.columns[1]. captions[0]  //– второй столбец таблицы,
 w.data.columns[2]. captions[0]  //– третий столбец таблицы…
+```
+Новый вариант
+```javascript
+$('#table-' + w.general.renderTo + ' th:nth-child(1)')
+.text('ФИО')
+.css({
+    "text-align": "center"
+});
 ```
 
 ### 3.2	Операции со столбцами. Код вставлять после TableRender
@@ -421,6 +432,27 @@ $lastColumn.each(function(index, item){
 $lastColumn.each(function(index, item){
     $(item).text($(item).text().replace('null', '-'));
 });
+```
+#### 3.2.5 Ширина одного столбца
+```javascript
+$('#table-' + w.general.renderTo + ' th:nth-child(1)')
+.css({
+    "width":"130px"
+});
+```
+#### 3.2.6 Скрыть последний столбец таблицы
+Вставить после TableRender
+```javascript
+$('#table-' + w.general.renderTo + ' tbody > tr > td:last-child').css({
+    'display': 'none'
+})
+```
+#### 3.2.7 УДАЛИТЬ последний столбец таблицы
+Вставить после TableRender
+```javascript
+$('#table-' + w.general.renderTo + ' th:last-child').remove();
+$('#table-' + w.general.renderTo + ' tbody > tr > td:last-child').remove();
+})
 ```
 
 
@@ -660,21 +692,20 @@ $('#table-' + w.general.renderTo + ' thead').css({
     'display': 'none'
 })
 ```
-### 3.13 Скрыть последний столбец таблицы
-Вставить после TableRender
-```javascript
-$('#table-' + w.general.renderTo + ' tbody > tr > td:last-child').css({
-    'display': 'none'
-})
-```
-### 3.14 Скрыть границы таблицы
+
+### 3.13 Скрыть границы таблицы
 Вставить после TableRender
 ```javascript
 $('#table-' + w.general.renderTo + ' table').css({
     'border': 'none'
 })
 ```
-
+### 3.14 Запрет разбивания слов (td = таблца, th = заголовок)
+Вставить после TableRender
+```javascript
+$('#table-' + w.general.renderTo + ' th')
+.css({"word-wrap":"","word-break":"","overflow":"hidden"}) 
+```
 
 ## 4 Гистограммы
 
@@ -761,6 +792,7 @@ w.series[0].data =  w.series[0].data.sort(function(a,b){
 ```
 ### 4.7 Сгруппировать колонки гистограммы по две. Одна будет рисоваться поверх другой.
 Проверено на 2.11
+
 Код добавить в гистограмму до конструктора
 ```javascript
 //Работает с количеством колонок <=6
@@ -1288,7 +1320,7 @@ $('#filter-' + w.general.renderTo).css({'font-weight': 'bold'});
 ```javascript
 $('#' + w.general.renderTo + ' i').css('color', '#efd8de')
 ```
-### 7.3	Фильтр со скруглением
+### 7.3	Фильтр со скруглением (как в Свердловске)
 ```javascript
 FilterRender({
     filter: w.general,
