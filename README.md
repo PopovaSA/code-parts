@@ -549,6 +549,57 @@ $('#table-' + w.general.renderTo)
     $('#table-' + w.general.renderTo + ' tr:nth-child(odd) td').css("background-image","");
 });
 ```
+### 3.11 Сделать отображение персональной информации 
+Нужно, когда информация лежит в одной строке, а нужно вывести в одном столбце. 
+Все привязываем в "столбцы". Скрываем строки, скрываем "показатель".
+
+```javascript
+TableRender({
+    table: w.general,
+    style: w.style,
+    columns: w.data.columns,
+    records: w.data.records,
+    editMask: w.data.editMask,
+    rowNames: w.data.rowNames,
+    colNames: w.data.colNames,
+    showToolbar: false
+});
+
+$('#table-' + w.general.renderTo + ' tr:first-child').css({
+    'display': 'none'
+});
+
+$('#table-' + w.general.renderTo + ' tbody > tr > td:last-child').css({
+    'display': 'none'
+});
+
+$('#table-' + w.general.renderTo + ' tbody').remove();
+$('#table-' + w.general.renderTo + ' thead > tr:first-child').remove();
+$('#table-' + w.general.renderTo + ' thead > tr > th:nth-child(2n+1)').remove();
+$('#table-' + w.general.renderTo + ' thead > tr > th').css({
+    'text-align': 'left'
+});
+
+
+var info =  $('#table-' + w.general.renderTo + ' thead > tr:nth-child(1) > th').text();
+$('#table-' + w.general.renderTo + ' thead > tr:nth-child(1) > th').html('<b>e-mail: </b>'+info);
+
+var info2 =  $('#table-' + w.general.renderTo + ' thead > tr:nth-child(2) > th').text();
+$('#table-' + w.general.renderTo + ' thead > tr:nth-child(2) > th').html('<b>тел.: </b>'+info2);
+
+var info3 =  $('#table-' + w.general.renderTo + ' thead > tr:nth-child(3) > th').text();
+$('#table-' + w.general.renderTo + ' thead > tr:nth-child(3) > th').html('<b>моб.: </b>'+info3);
+
+var info4 =  $('#table-' + w.general.renderTo + ' thead > tr:nth-child(4) > th').text();
+if (info4!== "null")
+    info4 = getDateString(new Date(info4), 7);
+else
+    info4 = "";
+$('#table-' + w.general.renderTo + ' thead > tr:nth-child(4) > th').html('<b>срок окончания полномочий: </b>'+ info4);
+
+
+$('#table-' + w.general.renderTo + ' thead > tr > th').css('font-weight', 'normal');
+```
 
 ## 4 Гистограммы
 
