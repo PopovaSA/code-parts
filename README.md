@@ -1008,9 +1008,12 @@ $('#' + w.general.renderTo).hover(
         $('#' + w.general.renderTo + ' div a').css('color', w.style.color);
     }
 );
+/*
+//это для правильного отображения даты
 function pad(n) {return n < 10 ? "0"+n : n;}
 if (w.data.rows.length == 1)
     w.general.text = pad((new Date).getDate())+"."+pad((new Date).getMonth()+1)+"."+(new Date).getFullYear();//(new Date).toLocaleDateString()//w.data.rows[0][0] + 'г.';
+*/
 ```
 
 ### 5.6	Подтянуть в текстовый виджет значение из фильтра
