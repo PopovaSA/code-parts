@@ -936,6 +936,37 @@ Highcharts.chart({
 ```javascript
 w.plotOptions.series.borderRadius = 12;
 ```
+### 4.12 Сделать гистограмму "Водопад"
+```javascript
+w.xAxis.categories = months.map(function(x){
+    return x + '\'' + w.xAxis.categories[0].split('-')[0].slice(2);
+});
+w.xAxis.max = 11;
+
+__________________________________
+w.general.type = 'waterfall'
+
+w.series[0].data.push({
+            name: 'Итого',
+            isSum: true,
+            color: '#375067'
+        })
+console.log(w);
+w.xAxis.categories.push('Итого');
+w.tooltip.formatter = function(){
+    return '<span style="color:'+this.point.color+'">\u25CF</span> '+this.point.name+': <b>'+Math.round(this.y).toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')+'</b><br/>';
+}
+Highcharts.chart({
+    chart: w.general,
+    xAxis: w.xAxis,
+    yAxis: w.yAxis,
+    plotOptions: w.plotOptions,
+    series: w.series,
+    legend: w.legend,
+    tooltip: w.tooltip,
+    colors: w.colors
+});
+```
 
 ## 5 Текст (заголовки, отступы)
 
@@ -1169,6 +1200,92 @@ visApi().onFilterChangedMessage({guid: "123", filterGuid: "b389423b2fcf4bf4ab305
 ```javascript
 var AUTOPLAY = 0;
 $('#' + w.general.renderTo).html('<video width="100%" height="100%" controls="controls" autoplay poster="https://bi.polymedia.ru/images_1/Video.jpg"><source src="https://bi.polymedia.ru/video/Visiology_full.mp4" type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;"></video>')
+```
+
+### 6.7 Накопление на виджете График-диаграмма с областями
+```javascript
+w.plotOptions.series.borderRadius = 3;
+w.plotOptions.series.stacking = 'normal';
+
+w.general.zoomType = 'x'
+w.series = [ w.series[4] ,w.series[1],w.series[2], w.series[0],w.series[3]];
+ w.tooltip.crosshairs = {
+                    width: 1.5,
+                    dashStyle: 'solid',
+                    color: 'red'
+                };
+w.tooltip.shared = true;
+w.tooltip.formatter = function(){
+        var s = '';
+        $.each(this.points, function () {
+            s += '<br/>' + this.series.name + ': ' + (Math.round(this.y/1)/1).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ');
+        });
+        return s;
+}
+
+
+w.series[0]['lineWidth'] = '1px';
+w.series[1]['lineWidth'] = '1px';
+w.series[2]['lineWidth'] = '1px';
+w.series[3]['lineWidth'] = '1px';
+w.series[4]['lineWidth'] = '1px';
+Highcharts.chart({
+    chart: w.general,
+    xAxis: w.xAxis,
+    yAxis: w.yAxis,
+    plotOptions: w.plotOptions,
+    series: w.series,
+    drilldown: w.drilldown,
+    legend: w.legend,
+    tooltip: {
+        enabled: true,
+        shared: true,
+        style: {
+            fontSize: '12px',
+            fontFamily: 'Arial'
+        },
+    
+        crosshairs: {
+                width: 2,
+                color: 'red',
+                dashStyle: 'shortdot'
+            },
+        // formatter: function() {
+        //     return '<br/>' + this.series.name + ': ' + this.y.toFixed().toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ');
+        // }
+    },
+    
+});
+
+console.log(w)
+
+var borderRadius = '4px'; // Радиус скругления
+var boxShadowString = 'rgba(0, 0, 0, 0.05) 4px 4px 8px 4px'; //Цвет, смещение по y, смецение по x, размытие и спред для тени
+
+$('#widget-' + w.general.renderTo).css({
+    'border-radius': borderRadius,
+    'box-shadow': boxShadowString
+});
+$('#widget-header-' + w.general.renderTo).css({
+    'border-radius': borderRadius,
+  //  'box-shadow': boxShadowString,
+    'border-bottom-left-radius': '0px',
+    'border-bottom-right-radius': '0px'
+});
+$('#' + w.general.renderTo).css({
+    'border-radius': borderRadius,
+    'border-top-left-radius': '0px',
+    'border-top-right-radius': '0px'
+});
+```
+
+### 6.8 Скрыть колонки в графике/гистограмме (когда нажимаете F5, часть серий сразу "выключена")
+Вставляется в самое начало:
+```javascript
+w.series[0].visible = false;
+w.series[1].visible = false;
+w.series[2].visible = false;
+w.series[3].visible = false;
 ```
 
 ### 7 Фильтр
