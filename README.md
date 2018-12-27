@@ -706,6 +706,18 @@ $('#table-' + w.general.renderTo + ' table').css({
 $('#table-' + w.general.renderTo + ' th')
 .css({"word-wrap":"","word-break":"","overflow":"hidden"}) 
 ```
+### 3.15 Обратная сортировка ПЕРВОГО столбца в таблице
+Вставить ДО TableRender
+```javascript
+w.data.rowNames.sort(function(a, b) {
+    return (a[0] < b[0]) ? 1: -1;
+});
+
+w.data.records.sort(function(a, b) {
+    return (a.rowNames[0] < b.rowNames[0]) ? 1: -1;
+});
+ 
+```
 
 ## 4 Гистограммы
 
