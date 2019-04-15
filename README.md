@@ -374,6 +374,26 @@ w.xAxis.categories = ['Первый', 'Второй']
 ```javascript
 @series.name+': '+Math.round(@value.y).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ').bold()
 ```
+### 2.9 Eправление стилями осей
+```javascript
+w.yAxis[0].title.style= {
+             fontSize: '16px',
+             fontFamily: '"Open Sans",sans-serif',
+             color: '#757575'
+            };
+w.yAxis[1].title.style= {
+             fontSize: '16px',
+             fontFamily: '"Open Sans",sans-serif',
+             color: '#757575'
+            };
+w.xAxis.title.style= {
+             fontSize: '16px',
+             fontFamily: '"Open Sans",sans-serif',
+             color: '#757575'
+            };     
+```
+
+
 ## 3. Таблицы
 
 ### 3.1	Наименования столбцов в таблиц. Код вставлять до TableRender
@@ -782,6 +802,8 @@ w.yAxis.type = 'logarithmic'
 w.series[0].data =  w.series[0].data.sort(function(a,b){
     return a.y > b.y? -1: 1 ;
 });
+w.xAxis.categories = undefined;
+
 ```
 ### 4.6 Вертикальный скролл
 ```javascript
@@ -980,7 +1002,6 @@ w.series[0].data.push({
             isSum: true,
             color: '#375067'
         })
-console.log(w);
 w.xAxis.categories.push('Итого');
 w.tooltip.formatter = function(){
     return '<span style="color:'+this.point.color+'">\u25CF</span> '+this.point.name+': <b>'+Math.round(this.y).toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')+'</b><br/>';
@@ -1127,7 +1148,6 @@ visApi().onDrillDownListener({widgetGuid:w.general.renderTo, guid:'00037ca5-9bd0
 });
 
 visApi().onDrillUpListener({widgetGuid:w.general.renderTo, guid:'1a441a49-d1e9-48b5-86c5-ab0c651a8d4a'}, function (info) { //guid должен быть уникален для листа
-    console.log(info.hierarchyPath)
     $('#widget-header-' + w.general.renderTo + ' div')
     .html(
         info.hierarchyPath.reduce(function(sum, current) {
@@ -1163,7 +1183,8 @@ visApi().onDrillDownListener({widgetGuid:w.general.renderTo, guid:'00037ca5-9bd0
 });
 
 visApi().onDrillUpListener({widgetGuid:w.general.renderTo, guid:'1a441a49-d1e9-48b5-86c5-ab0c651a8d4a'}, function (info) { //guid должен быть уникален для листа
-    console.log(info.hierarchyPath)
+    
+    log(info.hierarchyPath)
     $('#widget-header-' + w.general.renderTo + ' div')
     .html(
         info.hierarchyPath.reduce(function(sum, current) {
@@ -1184,28 +1205,26 @@ var WidgetGuid2 = '4bf38a2d69c044d7b31dba56080d64b6';
 
 visApi().onDrillDownListener({widgetGuid:WidgetGuid1, guid:'33112313nepo'}, function (info) {
     setTimeout(function () {
-        //console.log('listner1', visApi().getDrillPath(WidgetGuid1), visApi().getDrillPath(WidgetGuid2));
-        if (visApi().getDrillLevel(WidgetGuid1) != visApi().getDrillLevel(WidgetGuid2))
+              if (visApi().getDrillLevel(WidgetGuid1) != visApi().getDrillLevel(WidgetGuid2))
             visApi().drillDown(WidgetGuid2, info.selectedValues);
     });
 });
 
 visApi().onDrillUpListener({widgetGuid:WidgetGuid1, guid:'lalala'}, function (info) {
-    //console.log('uplistner1', visApi().getDrillLevel(WidgetGuid1), visApi().getDrillPath(WidgetGuid1), visApi().getDrillLevel(WidgetGuid2), visApi().getDrillPath(WidgetGuid2));
+  visApi().getDrillLevel(WidgetGuid2), visApi().getDrillPath(WidgetGuid2));
     if (visApi().getDrillLevel(WidgetGuid1) != visApi().getDrillLevel(WidgetGuid2))
         visApi().drillUp(WidgetGuid2);
 });
 
 visApi().onDrillDownListener({widgetGuid:WidgetGuid2, guid:'13131ghadgafdgasga'}, function (info) {
     setTimeout(function () {
-        //console.log('listner2', visApi().getDrillPath(WidgetGuid1), visApi().getDrillLevel(WidgetGuid2));
-        if (visApi().getDrillLevel(WidgetGuid1) != visApi().getDrillLevel(WidgetGuid2))
+             if (visApi().getDrillLevel(WidgetGuid1) != visApi().getDrillLevel(WidgetGuid2))
             visApi().drillDown(WidgetGuid1, info.selectedValues);
     });
 });
 
 visApi().onDrillUpListener({widgetGuid:WidgetGuid2, guid:'fafrfagagag'}, function (info) {
-    //console.log('uplistner2', visApi().getDrillLevel(WidgetGuid1), visApi().getDrillPath(WidgetGuid1), visApi().getDrillLevel(WidgetGuid2), visApi().getDrillPath(WidgetGuid2));
+ visApi().getDrillLevel(WidgetGuid2), visApi().getDrillPath(WidgetGuid2));
     if (visApi().getDrillLevel(WidgetGuid1) != visApi().getDrillLevel(WidgetGuid2))
         visApi().drillUp(WidgetGuid1);
 });
@@ -1289,7 +1308,6 @@ Highcharts.chart({
     
 });
 
-console.log(w)
 
 var borderRadius = '4px'; // Радиус скругления
 var boxShadowString = 'rgba(0, 0, 0, 0.05) 4px 4px 8px 4px'; //Цвет, смещение по y, смецение по x, размытие и спред для тени
