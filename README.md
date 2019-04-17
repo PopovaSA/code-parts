@@ -1402,3 +1402,70 @@ $('#'+ w.general.renderTo +' .rb-filter-header-close').css({
 ```
 ### 7.4	Глобальный фильтр
 Скрипт, лежащий по адресу K:\ОСИ\Отдел управления проектами\Аналитикам\global-filters v6.zip нужно положить на сервер, тогда во всех фильтрах с пробелом в конце названия будет устанавливаться одинаковое значение.
+
+
+### 8 Плоские таблицы
+Общая часть
+Для использования кода на плоских таблицах необходимо внести общие корректировки стандартного кода, в дальнейшем дополнять эти блоки необходимыми кусками кода и доделками внешнего вида. Данные куски кода являются обязательными! 
+```javascript
+var dataGrid = DataGridRender({
+    general: w.general,
+    errorState: w.errorState,
+    dataGridOptions: w.dataGridOptions,
+    textFormatters: w.textFormatters,
+    style: w.style,
+});
+
+```
+//ЧАСТЬ 0 – Описание переменных
+```javascript
+
+//ЧАСТЬ 0 – Описание переменных
+
+var oldOnCellPrepared = dataGrid.dataGridInstance.option("onCellPrepared");
+dataGrid.dataGridInstance.option("onCellPrepared", function(event){  
+```
+//ЧАСТЬ 1 – Установление стиля таблицы
+```javascript
+
+//ЧАСТЬ 1 – Установление стиля таблицы
+
+    oldOnCellPrepared(event); // Важная строка
+    
+});
+```
+//ЧАСТЬ2 – Управление элементами таблицы 
+```javascript
+
+//ЧАСТЬ 2 – Управление элементами таблицы 
+
+dataGrid;   // Важная строка, обязательно должно быть в самом конце всего кода
+    
+});
+```
+Итого все вместе
+
+```javascript
+var dataGrid = DataGridRender({
+    general: w.general,
+    errorState: w.errorState,
+    dataGridOptions: w.dataGridOptions,
+    textFormatters: w.textFormatters,
+    style: w.style,
+});
+
+
+//ЧАСТЬ0 – Описание переменных
+
+var oldOnCellPrepared = dataGrid.dataGridInstance.option("onCellPrepared");
+dataGrid.dataGridInstance.option("onCellPrepared", function(event){  
+//ЧАСТЬ1 – Установление стиля таблицы
+
+    oldOnCellPrepared(event); // Важная строка
+    
+});
+
+//ЧАСТЬ2 – Управление элементами таблицы 
+
+dataGrid;   // Важная строка, обязательно должно быть в самом конце всего кода
+```
