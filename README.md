@@ -1611,6 +1611,7 @@ dataGrid.dataGridInstance.option("onCellClick", function(event){
 
 ### 9 Сводная таблица
 Общая часть
+
 Для использования кода на сводных таблицах необходимо внести общие корректировки стандартного кода, в дальнейшем дополнять эти блоки необходимыми кусками кода и доделками внешнего вида. Данные куски кода являются обязательными! 
 
 //ЧАСТЬ 0 – Дополнительная часть для выравнивания столбцов
@@ -1679,3 +1680,52 @@ if(event.area === "column")
        $(event.cellElement).css("font-weight", "bold");
 ```
 
+### 9.2 Задать выравнивание столбцов по правому краю
+Код необходимо задавать для каждого столбца таблицы. Нумерация столбцов с 0.
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 0
+```javascript
+var dataSource = w.pivotGridOptions.dataSource;
+function expandAllItems(dataSource){
+   var rowFields = dataSource.fields()
+       .filter(function(field){ return field.area === "row"; })
+       .slice(0, -1);
+
+   rowFields.forEach(function(field){ dataSource.expandAll(field.dataField); });
+}
+```
+
+ЧАСТЬ 1
+```javascript
+var columnsAlignment = 
+[
+        {
+        index:0,
+        alignment: "right"
+    },
+        {
+        index:1,
+        alignment: "right"
+    },
+] // ..И так далее для каждого нужного столбца
+```
+
+ЧАСТЬ 2
+```javascript
+    // Расположение текста
+        var columnAlignment = columnsAlignment.find(x=>x.index===event.columnIndex)
+        if (columnAlignment && event.area === "data")
+            $(event.cellElement).css("text-align", columnAlignment.alignment);
+```
+
+### 9.3 Изменить высоту строк сводной таблицы
+Высота задается отступом от верхней и нижней границы строки в пикселях.
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 2
+```javascript
+    // Скукоживание высоты строк
+     if(event.area === "data" || event.area === "row")
+       $(event.cellElement).css("padding-top", "6px").css("padding-bottom", "6px");
+```
