@@ -1470,6 +1470,7 @@ dataGrid.dataGridInstance.option("onCellPrepared", function(event){
 
 dataGrid;   // Важная строка, обязательно должно быть в самом конце всего кода
 ```
+
 ### 8.1 Выравнивание столбцов плоской таблицы по правому и левому краю
 Код вставлять под комментарием с номером части
 
@@ -1500,3 +1501,181 @@ var columnsAlignment =
     if (columnAlignment)
         $(event.cellElement).css("text-align", columnAlignment.alignment);
 ```
+
+### 8.2 Задать высоту строк плоской таблицы
+Высота задается отступом от верхней и нижней границы строки в пикселях.
+
+Добавляется в область Часть 1 (Код вставлять под комментарием с номером части)
+
+ЧАСТЬ 1
+```javascript
+$(event.cellElement).css("padding-top", "1px").css("padding-bottom", "0px");
+```
+
+### 8.3 Форматирование строки плоской таблицы (цвет и жирность шрифта)
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 0
+```javascript
+var rowStyles = 
+    [
+        { index: 0, fontWeight: 'bold', backgroundColor: '#f2f3f3' },
+        { index: 1, fontWeight: 'normal', backgroundColor: '#f265f3' },
+        { index: 2, fontWeight: 'bold', backgroundColor: '#f2f3f3' },
+        { index: 3, fontWeight: 'bold', backgroundColor: 'red' }
+    ];
+```
+
+ЧАСТЬ 1
+```javascript
+// Жирные строки
+    var rowStyle = rowStyles.find(x=>x.index===event.rowIndex)
+    if(rowStyle)
+        $(event.cellElement)
+            .css("font-weight", rowStyle.fontWeight)
+            .css("background-color", rowStyle.backgroundColor);
+```
+
+### 8.4 Отключение сортировки плоской таблицы
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 2
+```javascript
+dataGrid.dataGridInstance.option("sorting", "none"); // отключение сортировки
+```
+
+### 8.5 Отключение постраничной прокрутки
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 2
+```javascript
+dataGrid.dataGridInstance.option("pager", {visible: false});// отключение постраничной прокрутки
+```
+
+### 8.6 Переход на другой лист дэшборда при нажатии на конкретный элемент
+Имитирует выбор показателя (значения измерения) в таблице для перехода на более подробный лист с анализом. 
+
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 0
+```javascript
+//Задаем строки, по нажатию на которые будет происходить переход
+// Название элемента задается жестко 
+var avaliableValues = 
+[
+    'АО "Михеевский ГОК"',
+    'ООО "Инвест Развитие"'
+];
+```
+
+ЧАСТЬ 1
+```javascript
+//Устанавливаем подчеркивание для нужных значений, курсов меняем на «руку» при наведении
+    if(event.rowType === "data" && avaliableValues.indexOf(event.displayValue) > -1 && event.columnIndex === 1){
+        $(event.cellElement)
+            .css("text-decoration", "underline")
+            .css("cursor","pointer")
+            .click(x=>alert(event.cell.rowPath[0]));
+    }
+```
+
+ЧАСТЬ 2
+```javascript
+dataGrid.dataGridInstance.option("onCellClick", function(event){
+    
+    var cellText = event.displayValue;
+    
+    if (avaliableValues.indexOf(cellText) > -1)
+    {
+        
+        visApi().setFilterSelectedValues("b4f1160b394f4759978ce07f72d7d08e", [[text]]);//Установка значения в фильтре. При необходимости влияния элементом на фильтр
+
+        setTimeout(x=>
+            $('#7aff23927fd14b74a1e76484b9b8780b').click(),1000); // Идентификатор листа, на который происходит переход
+
+    }
+});
+```
+Идентификатор листа можно получить скопировав ссылку на лист. В конце будет указана переменная «sheetGuid».
+&sheetGuid=bd32afddbc8043d0b49651078f3a6564&fit=true
+
+### 8.7 Сделать жирную шапку плоской таблицы
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 1
+```javascript
+// Жирнение заголовков
+    if (event.rowType === "header")
+       $(event.cellElement).css("font-weight", "bold");
+```
+
+### 9 Сводная таблица
+Общая часть
+Для использования кода на сводных таблицах необходимо внести общие корректировки стандартного кода, в дальнейшем дополнять эти блоки необходимыми кусками кода и доделками внешнего вида. Данные куски кода являются обязательными! 
+
+//ЧАСТЬ 0 – Дополнительная часть для выравнивания столбцов
+```javascript
+//ЧАСТЬ 0 – Дополнительная часть для выравнивания столбцов
+var pgrid = OlapTableRender({
+   general: w.general,
+   pivotGridOptions: w.pivotGridOptions,
+   style: w.style,
+   errorState: w.errorState,
+   textFormatters: w.textFormatters
+});
+```
+//ЧАСТЬ 1 – Описание переменных
+```javascript
+
+//ЧАСТЬ 1 – Описание переменных
+
+var oldOnCellPrepared = pgrid.pivotGridInstance.option("onCellPrepared");
+pgrid.pivotGridInstance.option("onCellPrepared", function(event){
+
+```
+//ЧАСТЬ 2 – Управление таблицей
+```javascript
+
+//ЧАСТЬ 2 – Управление таблицей
+
+oldOnCellPrepared(event);
+});
+pgrid; //эта строчка всегда должна оставаться последней
+
+```
+
+Итого все вместе
+
+```javascript
+
+//ЧАСТЬ 0 – Дополнительная часть для выравнивания столбцов
+
+var pgrid = OlapTableRender({
+   general: w.general,
+   pivotGridOptions: w.pivotGridOptions,
+   style: w.style,
+   errorState: w.errorState,
+   textFormatters: w.textFormatters
+});
+
+// ЧАСТЬ 1 – Описание переменных
+
+var oldOnCellPrepared = pgrid.pivotGridInstance.option("onCellPrepared");
+pgrid.pivotGridInstance.option("onCellPrepared", function(event){
+
+// ЧАСТЬ 2 – Управление таблицей
+
+oldOnCellPrepared(event);
+});
+pgrid; //эта строчка всегда должна оставаться последней
+```
+
+### 9.1 Сделать текст заголовка жирным в сводной таблице
+Код вставлять под комментарием с номером части
+
+ЧАСТЬ 2
+```javascript
+if(event.area === "column")
+       $(event.cellElement).css("font-weight", "bold");
+```
+
