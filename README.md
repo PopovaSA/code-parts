@@ -1459,6 +1459,7 @@ var dataGrid = DataGridRender({
 
 var oldOnCellPrepared = dataGrid.dataGridInstance.option("onCellPrepared");
 dataGrid.dataGridInstance.option("onCellPrepared", function(event){  
+
 //ЧАСТЬ1 – Установление стиля таблицы
 
     oldOnCellPrepared(event); // Важная строка
@@ -1468,4 +1469,34 @@ dataGrid.dataGridInstance.option("onCellPrepared", function(event){
 //ЧАСТЬ2 – Управление элементами таблицы 
 
 dataGrid;   // Важная строка, обязательно должно быть в самом конце всего кода
+```
+### 8.1 Выравнивание столбцов плоской таблицы по правому и левому краю
+Код вставлять под комментарием с номером части
+
+// В следующей переменной указать какой столбец по номеру (начиная с 0) какому выравниванию (по правому или левому краю) соответствует.
+
+ЧАСТЬ 0
+```javascript
+var columnsAlignment = 
+[
+    {
+        index:0,
+        alignment: "left"
+    },
+    {
+        index:1,
+        alignment: "left"
+    },
+    {
+        index:2,
+        alignment: "right"
+    },   // И так далее для нужных столбцов
+]; 
+```
+ЧАСТЬ 1
+```javascript
+    // Установка расположение текста
+    var columnAlignment = columnsAlignment.find(x=>x.index===event.columnIndex)
+    if (columnAlignment)
+        $(event.cellElement).css("text-align", columnAlignment.alignment);
 ```
