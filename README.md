@@ -374,7 +374,7 @@ w.xAxis.categories = ['Первый', 'Второй']
 ```javascript
 @series.name+': '+Math.round(@value.y).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ').bold()
 ```
-### 2.9 Eправление стилями осей
+### 2.9 Управление стилями осей
 ```javascript
 w.yAxis[0].title.style= {
              fontSize: '16px',
@@ -1728,4 +1728,48 @@ var columnsAlignment =
     // Скукоживание высоты строк
      if(event.area === "data" || event.area === "row")
        $(event.cellElement).css("padding-top", "6px").css("padding-bottom", "6px");
+```
+
+### 10 Круговая гистограмма
+
+### 10.1 Форматирование легенды и подсказки
+Для подписей в подсказке используются html- символы. Пример: 
+&#1096;&#1090; -html коды конкретных букв «ш» и «т»
+
+//http://yapro.ru/web-master/xhtml/html-kodi-bukv-i-specialinih-simvolov.html  - Можно использовать для вставления символов в подсказку
+```javascript
+var widgetId = w.general.renderTo;
+w.plotOptions.pie.dataLabels.enabled = false;
+var tooltip = {
+  useHTML: true,
+  backgroundColor: "white",
+  borderColor: "",
+  borderRadius: 4,
+  borderWidth: 0,
+  shape: "square",
+  shadow: true,
+  formatter: function formatter() {
+    return "<span style='z-index:9999;background-color:black;'>\n            <div style='font-size:12px;font-weight:bold;'>".concat(this.key, "</div>\n            <div><span style='font-size:20px;font-weight:bold;'>").concat(Math.round(this.y), "</span><span style='font-size:10px;color:rgb(173,173,173);'>  &#1096;&#1090;</span></div>\n            <div style='font-size:14px;font-weight:bold;color:rgb(20, 173, 252)'>").concat(Math.round(this.percentage), " %</div>\n        </span>");
+  }
+};
+
+w.legend.labelFormatter = function () {
+  return "<span style='color:black;display:flex;flex-wrap:nowrap;width:170px;padding-right:2px;padding-left:2px;'>\n        <!-- <span style='border-radius:20px;background-color:".concat(this.color, ";width:10px;height:10px;'></span> -->\n        <span style='font-weight:bold;'>").concat(this.name, "</span><span style='color:rgb(173,173,173);margin-left:2px;'>").concat(Math.round(this.percentage), "% </span>\n        <span style='font-weight:bold;margin-left: auto;'>").concat(Math.round(this.y), "</span>\n    </span>");
+};
+
+w.legend.useHTML = true;
+w.plotOptions.pie.borderWidth = 0; //убираем перекрытия между кусками пая
+
+Highcharts.chart({
+  chart: w.general,
+  plotOptions: w.plotOptions,
+  series: w.series,
+  drilldown: w.drilldown,
+  legend: w.legend,
+  tooltip: tooltip,
+  colors: w.colors
+});
+$("#" + widgetId + " .highcharts-container ").css("z-index", 2);
+$("#widget-action-"+widgetId).css("z-index", 3);
+$("#" + "pie-title-" + widgetId).css("z-index", 1);
 ```
