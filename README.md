@@ -212,7 +212,7 @@ $('#widget-header-' + w.general.renderTo + ' > a').css({
             enabled: false
         }
 ```
-### 1.24 Изменить отображение даты
+### 1.25 Изменить отображение даты
 #### Для работы необходимо положить на сервер библиотеку: ... , расположенную по адресу: \\serv2\opr$\Библиотека аналитика\Актуальные виджеты\
  
 ///d - дата для конывертации
@@ -232,6 +232,10 @@ $('#widget-header-' + w.general.renderTo + ' > a').css({
     w.xAxis.categories.forEach(function(categorie, index){
         w.xAxis.categories[index] = getDateString(new Date(categorie), 4);
     });
+```
+### 1.26 Убрать автоповорот подписей оси в гистограмме и графике
+```javascript
+w.xAxis.labels.autoRotation = false;
 ```
 
 ## 2 Форматирование подписей
