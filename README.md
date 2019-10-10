@@ -1459,6 +1459,17 @@ $('#'+ w.general.renderTo +' .rb-filter-header-close').css({
 ### 7.4	Глобальный фильтр
 Скрипт, лежащий по адресу K:\ОСИ\Отдел управления проектами\Аналитикам\global-filters v6.zip нужно положить на сервер, тогда во всех фильтрах с пробелом в конце названия будет устанавливаться одинаковое значение.
 
+### 7.5 Установить значение фильтра в зависимости от значения параметра URI
+```javascript
+var filterValue = (new URL(window.parent.location.href)).searchParams.get("initial_filter_value");
+if (filterValue) {
+    w.data.selected = [{
+        text: filterValue,
+        id: filterValue,
+    }];
+}
+```
+
 
 ## 8 Плоские таблицы
 Общая часть
