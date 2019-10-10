@@ -1379,6 +1379,21 @@ w.series[2].visible = false;
 w.series[3].visible = false;
 ```
 
+### 6.9 Добавить переход по клику по значениях дракона
+```javascript
+$('#' + w.general.renderTo + ' g.mainBars').each(function (i, e) {
+    if (e.__data__.part === "secondary") {
+        e.style.cursor = "pointer";
+    }
+});
+
+$('#' + w.general.renderTo + ' g.mainBars').click(function (e) {
+    var data = e.target.__data__;
+    if (data.part === "secondary") {
+        window.parent.location = "https://gtlk.polymedia.ru/dashboardsViewer?sectionId=3&dashboardId=60d1f9704c63402581ccbecdf0962408&sheetId=6f885ba46c614ec291a2e5f627217eae&cfo_filter=" + data.key;
+    }
+});
+```
 
 ## 7 Фильтр
 
