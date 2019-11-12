@@ -1797,6 +1797,58 @@ var columnsAlignment =
        $(event.cellElement).css("padding-top", "6px").css("padding-bottom", "6px");
 ```
 
+### 9.4 Сводная таблица, развернутая до второго уровня по умолчанию
+Заменить все.
+```javascript
+//разворачиваем первый уровень в строках
+w.pivotGridOptions.dataSource._fields[0].expanded = true;
+
+//явно задаем возможность разворачивать каждый уровень
+w.pivotGridOptions.dataSource._fields.forEach(function (f) { return f.allowExpandAll = true; });
+
+//добавляем пункт меню "Раскрыть все строки"
+w.pivotGridOptions.onContextMenuPreparing = function (event) {
+    var pivotGrid = event.component;
+
+    var pasteAfterItemIndex = event.items
+        .findIndex(function (item) { return item.text === "Свернуть все"; });
+
+    var newItems = [{
+        text: "Раскрыть все строки",
+        onItemClick: function onItemClick() {
+            pivotGrid.beginUpdate();
+            pivotGrid.getDataSource().fields()
+                .filter(function (f) { return f.dataField[0] === "r"; })
+                .map(function (f) { return f.dataField; })
+                .forEach(function (fieldId) { return pivotGrid.getDataSource().expandAll(fieldId); });
+            pivotGrid.endUpdate();
+        }
+    }, {
+        text: "Свернуть все строки",
+        onItemClick: function onItemClick() {
+            pivotGrid.beginUpdate();
+            pivotGrid.getDataSource().fields()
+                .filter(function (f) { return f.dataField[0] === "r"; })
+                .map(function (f) { return f.dataField; })
+                .sort(function(a,b){ return Number(b.split("-")[1]) - Number(a.split("-")[1]); })
+                .forEach(function (fieldId) { return pivotGrid.getDataSource().collapseAll(fieldId); });
+            pivotGrid.endUpdate();
+        }
+    }]; 
+
+    //вставляем новый пункт после пункта "Свернуть все"
+    event.items.splice(pasteAfterItemIndex + 1, 0, newItems[0], newItems[1]);
+};
+
+OlapTableRender({
+    general: w.general,
+    pivotGridOptions: w.pivotGridOptions,
+    style: w.style,
+    errorState: w.errorState,
+    textFormatters: w.textFormatters
+});
+```
+
 ## 10 Круговая гистограмма
 
 ### 10.1 Форматирование легенды и подсказки
