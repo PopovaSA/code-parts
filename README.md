@@ -432,7 +432,12 @@ $('#table-' + w.general.renderTo + ' th:nth-child(1)')
     "text-align": "center"
 });
 ```
-
+Замена наименования столбца над данными для виджета "Таблица"
+```javascript
+w.data.columns.forEach(function (column) {
+    column.captions[0] = column.captions[0].replace("__Сведения о ЧС", "Значение показателя");
+})
+```
 ### 3.2	Операции со столбцами. Код вставлять после TableRender
 #### 3.2.1 Выбор столбца 
 Столбец выбирается и сохраняется в переменную следующим образом:
