@@ -237,7 +237,13 @@ $('#widget-header-' + w.general.renderTo + ' > a').css({
 ```javascript
 w.xAxis.labels.autoRotation = false;
 ```
-
+### 1.27 Заменить заголовок виджета (заголовок должен быть включен для отображения в настройках)
+```javascript
+//Замена текста заголовка
+$('#widget-header-' + w.general.renderTo + ' a ').text('   ' + w.series[0].name.split('-')[0]);
+//w.series[0].name - наименование серии 
+//.split('-')[0] - обрезание наименования до "-"
+```
 ## 2 Форматирование подписей
 
 ### 2.1 Использование форматирования через поле в property grid DD
