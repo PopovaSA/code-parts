@@ -822,6 +822,17 @@ as string – используется для того, чтобы привес�
 Math.round((( ["Серия 1"] as string) == "" || ["Серия 1"] == null ? DateTime.Now : DateTime.Parse["Серия 1"] as string)  ) - DateTime.Parse["Серия 2"]) ).TotalDays,2)
 ```
 
+### 3.17 Сделать значения ячеек жирными и расположить по центру
+
+Для всей таблицы
+```javascript
+$('#table-' + w.general.renderTo + ' tr>td').css({ 'font-weight': 'bold', 'text-align': 'center' });
+```
+Кроме первого столбца
+```javascript
+$('#table-' + w.general.renderTo + ' tr>td:not(:first-child)').css({ 'font-weight': 'bold', 'text-align': 'center' });
+```
+
 ## 4 Гистограммы
 
 ### 4.1 Изменения при добавлении пользовательского виджета с сайта https://www.highcharts.com/
