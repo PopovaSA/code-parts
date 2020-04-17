@@ -1555,7 +1555,25 @@ if (filterValue) {
     }];
 }
 ```
+### 7.6 Автоматическая установка в фильтре значение на последнюю дату
+1. Ставит последнее пришешее знаечние в данных
+2. Всегда работает, даже если есть внешнее влияние
 
+```javascript
+//Смена календарного разреза
+function changePOK(x)
+{
+    //if (w.data.selected.length < 1){
+        visApi().getWidgetDataByGuid(w.general.renderTo).then(function (widgetData) {
+            var per = widgetData.data.rows[widgetData.data.rows.length - 1];
+            visApi().setFilterSelectedValues(w.general.renderTo, [per], function (response) {});
+//Если настроен шаблон для отображения
+		//$('#' + w.general.renderTo + ' .rb-filter-header-text span').text((new Date(per)).toLocaleDateString('ru-RU'));
+        });
+    //}
+}
+changePOK();
+```
 
 ## 8 Плоские таблицы
 Общая часть
