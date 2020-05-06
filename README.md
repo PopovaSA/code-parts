@@ -515,7 +515,7 @@ headColor - цвет шапки
 ### 3.4 Закрепить шапку таблицы. Код вставлять после TableRender
 Работает только вместе с подкраской шапки. В противном случае под шапкой будут видны строки при скролле.
 ```javascript
-$('#table-' + w.general.renderTo).css({'border-collapse':'initial'});
+$('#table-' + w.general.renderTo).css({'border-collapse':'initial'}); // initial - жирные разделители столбцов; collapse - тонкие разделители
 document.getElementById("grid-"+ w.general.renderTo).addEventListener("scroll", function(){
    var translate = "translate(0,"+this.scrollTop+"px)";
    this.querySelector("thead").style.transform = translate;
