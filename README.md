@@ -244,6 +244,11 @@ $('#widget-header-' + w.general.renderTo + ' a ').text('   ' + w.series[0].name.
 //w.series[0].name - наименование серии 
 //.split('-')[0] - обрезание наименования до "-"
 ```
+### 1.28 Изменить ширину блока легенды на графике (если слишком длинная)
+```javascript
+w.legend.itemStyle["textOverflow"] = "word-break"; // перенос слов на следующую строку
+w.legend.itemStyle.width = "160px";  // ширина блока 160 пикселей 
+```
 ## 2 Форматирование подписей
 
 ### 2.1 Использование форматирования через поле в property grid DD
