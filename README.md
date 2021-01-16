@@ -2027,7 +2027,8 @@ $('#' + w.general.renderTo + ' div')
     //         $(this).css({'background': arrowHoverImg});
     //     })
     .click(function(event){
-        window.top.location.href = 'http://89.239.138.139/dashboardsViewer?sectionId=26&dashboardId=48e4704d130f4612aa825154dadff72b&sheetId=2b44eec6a066459896092df94c97aa95';
+    // ваша ссылка тут
+        window.top.location.href = 'http://';
     });
     
 ```
