@@ -2001,3 +2001,34 @@ $("#" + widgetId + " .highcharts-container ").css("z-index", 2);
 $("#widget-action-"+widgetId).css("z-index", 3);
 $("#" + "pie-title-" + widgetId).css("z-index", 1);
 ```
+## 11 Изображение
+
+### 11.1 Изображение как кнопка (прозрачное/с ховером)
+Отличие от текста, что нажимать можно в любом месте области виджета, а не только на сам текст
+```javascript
+ImageRender({
+    image: w.general
+});
+// // Ссылки на картинки при наведении. Можно поставить свои. Чтобы не пролагивало, добавьте картинки на сам дэшборд, и сделайте ссылки с самого дашборда через F12 и инспектирование элемента.
+// var arrowImg = 'url(/corelogic/api/query/image?fileGuid=6ea0e83a9d1c48ae849a94582e8344f3&access_token=NoAuth) center center no-repeat',
+// arrowHoverImg = 'url(/corelogic/api/query/image?fileGuid=4ba76ab61ad241eabcb731ba49083a29&access_token=NoAuth) center center no-repeat';
+
+
+$('#' + w.general.renderTo + ' div')
+    .css({
+        "cursor": "pointer"
+    })
+    // //Функция ховера при наведении на виджет
+    // .hover(
+    //     function() {
+    //         $(this).css({'background': arrowImg});
+    //      },
+    //     function() {
+    //         $(this).css({'background': arrowHoverImg});
+    //     })
+    .click(function(event){
+        window.top.location.href = 'http://89.239.138.139/dashboardsViewer?sectionId=26&dashboardId=48e4704d130f4612aa825154dadff72b&sheetId=2b44eec6a066459896092df94c97aa95';
+    });
+    
+```
+
