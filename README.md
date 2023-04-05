@@ -573,8 +573,11 @@ $('#table-' + w.general.renderTo + ' tr > td:nth-child(4)').each(function(i, td)
 });
 ```
 ### 3.7	Убрать слияние строк в таблице (JS код)
-Работает только с дополнительной надстройкой на сервер!
-disableLeftColspan: true
+После стандартного куска
+```javascript
+$("#table-"+w.general.renderTo+" tr td").show();
+$("#table-"+w.general.renderTo+" tr").find('td[rowspan]').attr('rowspan', 1);
+```
 
 ### 3.8	Покраска полоской 
 ```javascript
