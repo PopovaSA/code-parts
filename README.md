@@ -1583,6 +1583,10 @@ function changePOK(x)
 }
 changePOK();
 ```
+### 7.7 Установить значение фильтра на "все" (сбросить значение фильтра)
+```javascript
+ visApi().setFilterSelectedValues(filtrGuid, [], function (response) {}); //filtrGuid - идентификатор фильтра
+```
 
 ## 8 Плоские таблицы
 Общая часть
