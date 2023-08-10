@@ -1138,7 +1138,7 @@ Highcharts.chart({
 ### 5.4	Поменять стиль части текста (цвет, жирность, размер)  
 Вставлять в поле для текста в PG
 ```javascript
-<span style="color: red; font-weight: bold">Текст часть 1</span> текст часть 2
+<span style="color: red; font-weight: bold; font-size: 45px">Текст часть 1</span> текст часть 2
 ```
 
 ### 5.5	Сделать ссылку
