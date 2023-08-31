@@ -2046,4 +2046,11 @@ $('#' + w.general.renderTo + ' div')
     });
     
 ```
+## 12 Фильтр по дате
 
+### 12.1 Установить диапазон дат в фильтр
+```javascript
+const dateBegin = new Date("01.01.2023");
+const dateEnd = new Date("30.08.2023");
+visApi().setDateFilterSelectedValues(w.general.renderTo, [dateBegin, dateEnd]);
+```
