@@ -2080,7 +2080,7 @@ function getPrevPeriod(dateBegin,dateEnd){
     return [prevDateBegin, prevDateEnd];    
 } 
 
-//подписка на загрузку всех виджетов (чтобы при открытии отчета точно отработать после загрузки фильтра с отчетным периодом)
+//подписка на загрузку всех виджетов (чтобы при открытии дэша точно отработать после загрузки фильтра с отчетным периодом)
 const allLoadedLisID = w.general.renderTo + ' => all-loaded'
 visApi().onAllWidgetsLoadedListener({guid: allLoadedLisID}, function () {
      setFilterValue()
