@@ -2054,3 +2054,39 @@ const dateBegin = new Date("01.01.2023");
 const dateEnd = new Date("30.08.2023");
 visApi().setDateFilterSelectedValues(w.general.renderTo, [dateBegin, dateEnd]);
 ```
+### 12.2 Установить в фильтре предыдущий период, относительно выбранному в фильтре с отчетным периодом
+Если в главном фильтре выбрана неделя, код установит у себя предыдущую неделю. В главном выбраны 2 дня - установит предыдущие 2 дня. И т.п.
+Вставлять после основного куска
+currPeriodGuid - гуид фильтра с отчетным периодом
+
+```javascript
+//функция установки значений  
+function setFilterValue() {
+    const filterDateEnd = visApi().getSelectedValues(currPeriodGuid).flat().flat().flat()
+    const dateBegin = new Date(filterDateEnd[0]);
+    const dateEnd = new Date(filterDateEnd[1]);
+    
+    const [prevDateBegin, prevDateEnd] = getPrevPeriod(dateBegin, dateEnd);
+    visApi().setDateFilterSelectedValues(w.general.renderTo, [prevDateBegin, prevDateEnd]); 
+} 
+
+//функция расчета начала и конца предыдущего периода
+function getPrevPeriod(dateBegin,dateEnd){
+    const daysLag = Math.ceil(Math.abs(dateEnd.getTime() - dateBegin.getTime()) / (1000 * 3600 * 24)) + 1;
+    let prevDateBegin = new Date(dateBegin);
+    let prevDateEnd = new Date(dateEnd);
+    prevDateBegin.setDate(dateBegin.getDate() - daysLag);
+    prevDateEnd.setDate(dateEnd.getDate() - daysLag);
+    return [prevDateBegin, prevDateEnd];    
+} 
+
+//подписка на загрузку всех виджетов (чтобы при открытии отчета точно отработать после загрузки фильтра с отчетным периодом)
+const allLoadedLisID = w.general.renderTo + ' => all-loaded'
+visApi().onAllWidgetsLoadedListener({guid: allLoadedLisID}, function () {
+     setFilterValue()
+     visApi().onAllWidgetsLoadedListener({guid: allLoadedLisID}, function () {})
+});
+
+//подписка на смену отметки в фильтре с отчетным периодом
+visApi().onSelectedValuesChangedListener({ guid: "123", widgetGuid : currPeriodGuid }, setFilterValue);
+```
