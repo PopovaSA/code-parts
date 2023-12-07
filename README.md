@@ -842,6 +842,24 @@ $('#table-' + w.general.renderTo + ' tr>td').css({ 'font-weight': 'bold', 'text-
 $('#table-' + w.general.renderTo + ' tr>td:not(:first-child)').css({ 'font-weight': 'bold', 'text-align': 'center' });
 ```
 
+### 3.18 Поменять местами столбцы в таблице
+
+Может пригодиться, когда расчетный столбец нужно передвинуть. В примере меняются местами второй и четвёртый столбцы. 
+```javascript
+w.data.colNames.splice(1, 0, w.data.colNames[3])        //Вставляем название столбца 4 между 1 и 2 столбцами
+w.data.colNames.splice(4)                               //Удаляем название последнего столбца
+w.data.columns.splice(2, 0, w.data.columns[4]);         //Вставляем "шапку" 4го столбца между 1м и 2м
+w.data.columns.splice(5)                                //Удаляем шапку последнего столбца
+
+w.data.records.forEach(elem => {                        //Для каждой строки таблицы
+    let col1 = elem["column 1"];                        //Записываем в переменную col1 значение второго столбца    
+    let col2 = elem["column 2"];                        //Записываем в переменную col2 значение третьего столбца 
+    elem["column 1"] =  elem["column 3"]                //Заменяем значение второго столбца значением из 4го
+    elem["column 2"] = col1                             //Заменяем значение 3го столбца значением из 2го
+    elem["column 3"] = col2                             //Заменяем значение 4го столбца значением из 3го
+})
+```
+
 ## 4 Гистограммы
 
 ### 4.1 Изменения при добавлении пользовательского виджета с сайта https://www.highcharts.com/
