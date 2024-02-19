@@ -1108,7 +1108,11 @@ Highcharts.chart({
 ```javascript
 w.plotOptions.series.borderRadius = 12;
 ```
-### 4.10 Сделать гистограмму "Водопад"
+### 4.10 Установить минимальный размер столбиков. (Минус в том, что у у нулевых столбиков тоже будет минимальный размер)
+```javascript
+w.plotOptions.series.minPointLength = 10;
+```
+### 4.11 Сделать гистограмму "Водопад"
 ```javascript
 w.xAxis.categories = months.map(function(x){
     return x + '\'' + w.xAxis.categories[0].split('-')[0].slice(2);
