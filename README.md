@@ -250,6 +250,10 @@ $('#widget-header-' + w.general.renderTo + ' a ').text('   ' + w.series[0].name.
 w.legend.itemStyle["textOverflow"] = "word-break"; // перенос слов на следующую строку
 w.legend.itemStyle.width = "160px";  // ширина блока 160 пикселей 
 ```
+### 1.29 Код для перекраски фона виджета в градиент
+```javascript
+$('#' + w.general.renderTo).css({'background-image': 'linear-gradient(-110deg, #ef5350, #b71c1c)'})	// -110deg - угол градиента
+```
 ## 2 Форматирование подписей
 
 ### 2.1 Использование форматирования через поле в property grid DD
