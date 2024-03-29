@@ -280,6 +280,12 @@ Math.round(@value.y/1000)  // Округление до тысяч
 ```javascript
 Math.round(@value.y).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
 ```
+##### Поставить пробелы между тысячами у подписей суммы при включенном накоплении
+```javascript
+w.yAxis.stackLabels.formatter = function() {
+   return Math.round(this.total).toString().replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ')
+}
+```
 ##### Покрасить подпись в цвет точки
 ```javascript
 '<div style="color:' +@point.color+ '">'+ @value +'</div>'
